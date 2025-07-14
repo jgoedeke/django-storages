@@ -212,9 +212,9 @@ class AzureStorage(BaseStorage):
             self._user_delegation_key is None
             or expiry > self._user_delegation_key_expiry
         ):
-            # Make sure the key is valid as soon as we get it
+            # Make sure the key is valid as soon as we get it and less than 7 days
             key_start_time = datetime.utcnow() - timedelta(minutes=5)
-            key_expiry_time = key_start_time + timedelta(days=7)
+            key_expiry_time = key_start_time + timedelta(days=7, minutes=-10)
             self._user_delegation_key = self.service_client.get_user_delegation_key(
                 key_start_time=key_start_time, key_expiry_time=key_expiry_time
             )
